@@ -8,6 +8,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: unzip -q FocusTube_Native_APK_Project.zip -d proj
+      - name: Fix Java target
+        run: |
+          cat >> proj/FocusTube/app/build.gradle <<'EOF'
+          android {
+            compileOptions {
+              sourceCompatibility JavaVersion.VERSION_17
+              targetCompatibility JavaVersion.VERSION_17
+            }
+            kotlinOptions { jvmTarget = '17' }
+          }
+          EOF
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
